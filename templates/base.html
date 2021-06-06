@@ -1,0 +1,24 @@
+{% load static %}
+
+<html>
+    <head>
+        <title>My App - {% block title %}{% endblock title %}</title>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}" />
+
+    </head>
+
+    <div class="ui container">
+        {% include 'main/navbar.html' %}
+        {% block content %}
+        {% endblock content %}
+
+
+        
+        <script type="text/javascript" src="{% static 'jquery-3.2.1.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main.js' %}"></script>
+        {% block script %}
+        {% endblock script %}
+    </div>
+</html>

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Profile
+{% endblock title %}
+
+
+{% block content %}
+
+<p>First name: {{account.first_name}}</p>
+<p>Last name: {{account.last_name}}</p>
+<p><img src="{{account.avatar.url}}" class="img img-responsive" /></p>
+<p>bio: {{ account.bio }}</p>
+<p>post number: {{account.get_post_no }}</p>
+<p>No of Friends: {{account.get_friends_no}}</p>
+<p>No of Likes given: {{ account.get_likes_given_no }}</p>
+<p>No of likes received: {{ account.get_likes_received_no }}</p>
+
+<ul>
+{% for friend in account.get_friends%}
+<li>{{ friend }}</li>
+{% endfor %}
+</ul>
+
+
+
+<br><br><br>
+
+{% if confirm %}
+<h1>Updated</h1>
+{% endif %}
+<form action="" method="POST" class="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Update</button>
+</form>
+
+{% endblock content %}

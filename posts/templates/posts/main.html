@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+
+            <div class="col-lg-6" >
+                <div style="border: 1px solid black;padding: 1rem;">
+                    {% if post_added %}
+                        <div class="btn btn-outline-success">Post added</div>
+                    {% endif %}
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ post_form.as_p }}
+                        <button type="submit" class="btn btn-primary"submit_post_form">Send Post</button>
+                    </form>
+                </div>
+            </div><br><br>
+
+            <div class="col-lg-6">
+                <div>
+                    
+                    {% for post in qs %}
+                    <div class="card" style="margin-bottom: 2rem;padding: 1rem;">
+                    <div>
+                        {% ifequal request.user post.author.user %}
+                            <div style="float: right;">
+                                <a href="{% url 'posts:post-update' post.id %}"><button class="btn-outline-primary">Update</button></a>
+                                <a href="{% url 'posts:post-delete' post.id %}"><button class="btn-outline-danger">Delete</button></a>
+                            </div>
+                        {% endifequal %}
+                        <p> {{ post.content }} </p>
+                        
+                        <img src="{{ post.image.url }}" class="img img-responsive" style="width:100%;" />
+                        <small>{{post.created | timesince}} ago</small>
+                        <form action="{% url 'posts:like-post-view' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ post.id }}" name="post_id" />
+                            <button class="btn-outline-primary" style="border: none;" type="submit">
+                                {% if account not in post.liked.all %}
+                                    Like
+                                {% else %}
+                                    Unlike
+                                {% endif %}
+                            </button>
+                            &nbsp; {{post.num_likes}}
+                        </form>
+                        
+                    </div>
+                    <div>
+                        <ul>
+                        {% if post.comment_set.all %}
+                            {% for comment in post.comment_set.all %}
+                            <li><small>{{ comment.body }}</small></li>
+                            {% endfor %}
+                        {% endif %}
+                       </ul>
+                        
+                    </div>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name='post_id' value="{{ post.id }}" />
+                        {{ comment_form }}
+                        <button type="submit" class="btn-primary" name="submit_comment_form">Comment</button>
+                    </form>
+                </div>
+                    {% endfor %}
+                    
+                </div>
+
+            </div>
+
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}

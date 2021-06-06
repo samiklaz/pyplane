@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Invite Friends
+{% endblock title %}
+
+
+
+{% block content %}
+<ul>
+    {% for friend in queryset %}
+        <li>{{ friend }}</li>
+    {% endfor %}
+</ul>
+{% endblock content %}
